@@ -3,9 +3,11 @@ package com.lihb.wheelview
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import com.lihb.library.WheelView
-import com.lihb.library2d.adapter.NumericWheelAdapter
+import com.lihb.library2d.adapter.BaseQuickWheelAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -35,20 +37,32 @@ class MainActivity : AppCompatActivity() {
         wheel_view.setOnItemSelectListener { index ->
             Toast.makeText(MainActivity@ this, "选中$index", Toast.LENGTH_SHORT).show()
         }
+        val list = arrayListOf<String>()
+        for (i in 1..50000){
+            list.add("SSSS$i")
+        }
 
-        val adapter = NumericWheelAdapter(this, 0, 50)
+//        val adapter = NumericWheelAdapter(this, 0, 50)
+//        adapter.setLabel("")
+//        adapter.textSize = 15
+//        adapter.textColor = Color.BLACK
+
+        val adapter = object:BaseQuickWheelAdapter<String>(android.R.layout.simple_list_item_1){
+            override fun onBindData(index: Int, bean: String?, convertView: View?) {
+                (convertView as TextView).text = bean
+            }
+        }
+        adapter.setNewData(list)
         wheel_view2.viewAdapter = adapter
-        wheel_view2.visibleItems = 10
+        wheel_view2.visibleItems = 5
         wheel_view2.isCyclic = true
-        wheel_view2.currentItem = 20
-        adapter.setLabel("")
-        adapter.textSize = 15
-        adapter.textColor = Color.BLACK
-        wheel_view2.addClickingListener { wheel, itemIndex ->
-            Toast.makeText(MainActivity@ this, "选中$itemIndex", Toast.LENGTH_SHORT).show()
-        }
-        wheel_view2.addChangingListener { wheel, oldValue, newValue ->
-            Toast.makeText(MainActivity@ this, "Changing $newValue", Toast.LENGTH_SHORT).show()
-        }
+//        wheel_view2.setShadowColor(255,255,255)
+//        wheel_view2.currentItem = 20
+//        wheel_view2.addClickingListener { wheel, itemIndex ->
+//            Toast.makeText(MainActivity@ this, "选中$itemIndex", Toast.LENGTH_SHORT).show()
+//        }
+//        wheel_view2.addChangingListener { wheel, oldValue, newValue ->
+//            Toast.makeText(MainActivity@ this, "Changing $newValue", Toast.LENGTH_SHORT).show()
+//        }
     }
 }
