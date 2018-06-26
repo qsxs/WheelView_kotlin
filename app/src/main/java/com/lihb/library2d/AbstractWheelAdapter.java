@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package com.lihb.library2d.adapter;
+package com.lihb.library2d;
 
 import android.database.DataSetObserver;
 import android.view.View;
@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Abstract Wheel adapter.
  */
-public abstract class AbstractWheelAdapter implements WheelViewAdapter {
+public abstract class AbstractWheelAdapter extends WheelViewAdapter {
     // Observers
     private List<DataSetObserver> datasetObservers;
     

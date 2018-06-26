@@ -34,7 +34,6 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
 
-import com.lihb.library2d.adapter.WheelViewAdapter;
 import com.lihb.wheelview.R;
 
 import java.util.LinkedList;
@@ -237,6 +236,7 @@ public class WheelView extends View {
             this.viewAdapter.unregisterDataSetObserver(dataObserver);
         }
         this.viewAdapter = viewAdapter;
+        viewAdapter.setWheelView(this);
         if (this.viewAdapter != null) {
             this.viewAdapter.registerDataSetObserver(dataObserver);
         }

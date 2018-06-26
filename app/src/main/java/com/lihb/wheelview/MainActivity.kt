@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import com.lihb.library.WheelView
-import com.lihb.library2d.adapter.BaseQuickWheelAdapter
+import com.lihb.library2d.BaseQuickWheelAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
 //        adapter.textSize = 15
 //        adapter.textColor = Color.BLACK
 
-        val adapter = object:BaseQuickWheelAdapter<String>(android.R.layout.simple_list_item_1){
+        val adapter = object: BaseQuickWheelAdapter<String>(android.R.layout.simple_list_item_1){
             override fun onBindData(index: Int, bean: String?, convertView: View?) {
                 (convertView as TextView).text = bean
             }

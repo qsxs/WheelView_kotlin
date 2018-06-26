@@ -1,4 +1,4 @@
-package com.lihb.library2d.adapter;
+package com.lihb.library2d;
 
 import android.support.annotation.LayoutRes;
 import android.view.LayoutInflater;
