@@ -53,9 +53,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         adapter.setNewData(list)
-        wheel_view2.viewAdapter = adapter
-        wheel_view2.visibleItems = 5
-        wheel_view2.isCyclic = true
+        wheel_view2.adapter = adapter
 //        wheel_view2.setShadowColor(255,255,255)
 //        wheel_view2.currentItem = 20
 //        wheel_view2.addClickingListener { wheel, itemIndex ->

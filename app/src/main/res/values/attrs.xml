@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?><!-- Created by lhb on  -->
+<resources>
+    <declare-styleable name="WheelView">
+        <attr name="gradual" format="boolean" />
+        <attr name="diving_color" format="color" />
+        <attr name="diving_width" format="dimension" />
+        <attr name="cyclic" format="boolean" />
+        <attr name="visible_items" format="integer" />
+    </declare-styleable>
+
+</resources>

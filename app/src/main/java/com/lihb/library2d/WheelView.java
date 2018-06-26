@@ -20,11 +20,11 @@
 package com.lihb.library2d;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
 import android.util.AttributeSet;
@@ -46,62 +46,33 @@ import java.util.List;
  * @author Yuri Kanivets
  */
 public class WheelView extends View {
-    public static int DEF_DIVING_COLOR = Color.GRAY;
-
-    /**
-     * Top and bottom shadows colors
-     */
-    // TODO 设置透明度
-    private int[] SHADOWS_COLORS = new int[]{0xefffffff,
-            0xcfffffff, 0x3fffffff};
-
-    /**
-     * Top and bottom items offset (to hide that)
-     */
+    private static final int DEF_DIVING_COLOR = Color.GRAY;
     private static final int ITEM_OFFSET_PERCENT = 0;
-
-    /**
-     * Left and right padding value
-     */
     private static final int PADDING = 10;
-
-    /**
-     * Default count of visible items
-     */
-    // TODO 默认显示几行数据
     private static final int DEF_VISIBLE_ITEMS = 5;
 
+    private final int[] SHADOWS_COLORS = new int[]{0x70FFFFFF, 0x30FFFFFF, 0};
+
+    private boolean drawShadows = true;
     private int divingColor = DEF_DIVING_COLOR;
+    private int divingWidth = 1;
+    private boolean isCyclic = false;
+    private int visibleItems = DEF_VISIBLE_ITEMS;
+
     // Wheel Values
     private int currentItem = 0;
 
-    // Count of visible items
-    private int visibleItems = DEF_VISIBLE_ITEMS;
-
     // Item height
     private int itemHeight = 0;
-
-    // Center Line
-    private Drawable centerDrawable;
-
-    // Wheel drawables
-    private int wheelBackground = R.drawable.wheel_bg;
-    private int wheelForeground = R.drawable.wheel_val;
 
     // Shadows drawables
     private GradientDrawable topShadow;
     private GradientDrawable bottomShadow;
 
-    // Draw Shadows
-    private boolean drawShadows = true;
-
     // Scrolling
     private WheelScroller scroller;
     private boolean isScrollingPerformed;
     private int scrollingOffset;
-
-    // Cyclic
-    boolean isCyclic = false;
 
     // Items layout
     private LinearLayout itemsLayout;
@@ -120,14 +91,12 @@ public class WheelView extends View {
     private List<OnWheelScrollListener> scrollingListeners = new LinkedList<OnWheelScrollListener>();
     private List<OnWheelClickedListener> clickingListeners = new LinkedList<OnWheelClickedListener>();
 
-    String label = "";
-
     /**
      * Constructor
      */
     public WheelView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        initData(context);
+        init(context, attrs);
     }
 
     /**
@@ -135,7 +104,7 @@ public class WheelView extends View {
      */
     public WheelView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initData(context);
+        init(context, attrs);
     }
 
     /**
@@ -143,20 +112,30 @@ public class WheelView extends View {
      */
     public WheelView(Context context) {
         super(context);
-        initData(context);
+        init(context, null);
     }
 
     /**
      * Initializes class data
      *
      * @param context the context
+     * @param attrs
      */
-    private void initData(Context context) {
-        scroller = new WheelScroller(getContext(), scrollingListener);
+    private void init(Context context, AttributeSet attrs) {
+        scroller = new WheelScroller(context, scrollingListener);
+        if (attrs != null) {
+            TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.WheelView, 0, 0);
+            drawShadows = a.getBoolean(R.styleable.WheelView_gradual, drawShadows);
+            divingColor = a.getColor(R.styleable.WheelView_diving_color, divingColor);
+            isCyclic = a.getBoolean(R.styleable.WheelView_cyclic, isCyclic);
+            visibleItems = a.getInt(R.styleable.WheelView_visible_items, visibleItems);
+            divingWidth = a.getDimensionPixelSize(R.styleable.WheelView_diving_width, divingWidth);
+            a.recycle();
+        }
     }
 
     // Scrolling listener
-    WheelScroller.ScrollingListener scrollingListener = new WheelScroller.ScrollingListener() {
+    private WheelScroller.ScrollingListener scrollingListener = new WheelScroller.ScrollingListener() {
         @Override
         public void onStarted() {
             isScrollingPerformed = true;
@@ -230,7 +209,7 @@ public class WheelView extends View {
      *
      * @return the view adapter
      */
-    public WheelViewAdapter getViewAdapter() {
+    public WheelViewAdapter getAdapter() {
         return viewAdapter;
     }
 
@@ -253,7 +232,7 @@ public class WheelView extends View {
      *
      * @param viewAdapter the view adapter
      */
-    public void setViewAdapter(WheelViewAdapter viewAdapter) {
+    public void setAdapter(WheelViewAdapter viewAdapter) {
         if (this.viewAdapter != null) {
             this.viewAdapter.unregisterDataSetObserver(dataObserver);
         }
@@ -445,49 +424,19 @@ public class WheelView extends View {
      *
      * @return true is shadows are drawn
      */
-    public boolean drawShadows() {
+    public boolean isGradual() {
         return drawShadows;
     }
 
     /**
      * Set whether shadows should be drawn
      *
-     * @param drawShadows flag as true or false
+     * @param gradual flag as true or false
      */
-    public void setDrawShadows(boolean drawShadows) {
-        this.drawShadows = drawShadows;
+    public void setGradual(boolean gradual) {
+        this.drawShadows = gradual;
     }
 
-    /**
-     * Set the shadow gradient color
-     *
-     * @param start
-     * @param middle
-     * @param end
-     */
-    public void setShadowColor(int start, int middle, int end) {
-        SHADOWS_COLORS = new int[]{start, middle, end};
-    }
-
-    /**
-     * Sets the drawable for the wheel background
-     *
-     * @param resource
-     */
-    public void setWheelBackground(int resource) {
-        wheelBackground = resource;
-        setBackgroundResource(wheelBackground);
-    }
-
-    /**
-     * Sets the drawable for the wheel foreground
-     *
-     * @param resource
-     */
-    public void setWheelForeground(int resource) {
-        wheelForeground = resource;
-        centerDrawable = getContext().getResources().getDrawable(wheelForeground);
-    }
 
     /**
      * Invalidates wheel
@@ -513,10 +462,6 @@ public class WheelView extends View {
      * Initializes resources
      */
     private void initResourcesIfNecessary() {
-        if (centerDrawable == null) {
-            centerDrawable = getContext().getResources().getDrawable(wheelForeground);
-        }
-
         if (topShadow == null) {
             topShadow = new GradientDrawable(Orientation.TOP_BOTTOM, SHADOWS_COLORS);
         }
@@ -524,8 +469,6 @@ public class WheelView extends View {
         if (bottomShadow == null) {
             bottomShadow = new GradientDrawable(Orientation.BOTTOM_TOP, SHADOWS_COLORS);
         }
-
-        setBackgroundResource(wheelBackground);
     }
 
     /**
@@ -647,10 +590,10 @@ public class WheelView extends View {
             updateView();
 
             drawItems(canvas);
+            if (drawShadows) drawShadows(canvas);
             drawCenterRect(canvas);
         }
 
-        if (drawShadows) drawShadows(canvas);
     }
 
     /**
@@ -662,7 +605,7 @@ public class WheelView extends View {
 		/*/ Modified by wulianghuan 2014-11-25
 		int height = (int)(1.5 * getItemHeight());
 		//*/
-        int height = (int) (3 * getItemHeight());
+        int height = (int) ((getHeight() - getItemHeight()) * 0.7);
         //*/
         topShadow.setBounds(0, 0, getWidth(), height);
         topShadow.draw(canvas);
@@ -706,9 +649,9 @@ public class WheelView extends View {
         Paint paint = new Paint();
         paint.setColor(divingColor);
         // 设置线宽
-        paint.setStrokeWidth((float) 1);
+        paint.setStrokeWidth(divingWidth);
         // 绘制上边直线
-		canvas.drawLine(0, center - offset, getWidth(), center - offset, paint);
+        canvas.drawLine(0, center - offset, getWidth(), center - offset, paint);
         // 绘制下边直线
         canvas.drawLine(0, center + offset, getWidth(), center + offset, paint);
     }
@@ -716,7 +659,7 @@ public class WheelView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (!isEnabled() || getViewAdapter() == null) {
+        if (!isEnabled() || getAdapter() == null) {
             return true;
         }
 

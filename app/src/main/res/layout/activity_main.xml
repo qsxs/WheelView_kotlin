@@ -16,19 +16,24 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <!--<com.lihb.library.WheelViewV2-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"/>-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"/>-->
     <com.lihb.library.WheelView
-        android:visibility="gone"
         android:id="@+id/wheel_view"
-        android:background="@color/colorAccent"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:visibility="gone" />
 
     <com.lihb.library2d.WheelView
         android:id="@+id/wheel_view2"
-        android:background="@color/colorAccent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:cyclic="true"
+        app:visible_items="3"
+        app:gradual ="true"
+        android:background="@color/colorAccent"
+        app:diving_width="10dp"
+        app:diving_color="@color/colorPrimaryDark"/>
 
 </android.support.constraint.ConstraintLayout>
