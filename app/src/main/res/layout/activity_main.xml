@@ -19,9 +19,16 @@
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="match_parent"/>-->
     <com.lihb.library.WheelView
+        android:visibility="gone"
         android:id="@+id/wheel_view"
         android:background="@color/colorAccent"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.lihb.library2d.WheelView
+        android:id="@+id/wheel_view2"
+        android:background="@color/colorAccent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
 </android.support.constraint.ConstraintLayout>
