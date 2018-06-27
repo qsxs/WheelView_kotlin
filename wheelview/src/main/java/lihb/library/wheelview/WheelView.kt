@@ -150,6 +150,15 @@ class WheelView : View {
      *
      * @param listener the listener
      */
+    fun addChangingListener(@Nullable listener: (Any, Any, Any) -> Int) {
+        TODO()
+    }
+
+    /**
+     * Adds wheel changing listener
+     *
+     * @param listener the listener
+     */
     fun addChangingListener(@Nullable listener: OnWheelChangedListener) {
         changingListeners.add(listener)
     }
@@ -803,6 +812,14 @@ class WheelView : View {
             internal set
         var onItemClickListener: OnItemClickedListener? = null
         var onItemSelectedListener: OnItemSelectedListener? = null
+
+        fun setOnItemClickListener(param: (WheelView, WheelViewAdapter, Int, Boolean) -> Unit) {
+            TODO()
+        }
+
+        fun setOnItemSelectedListener(param: (WheelView, WheelViewAdapter, Int) -> Int) {
+            TODO()
+        }
 
         /**
          * Gets items count

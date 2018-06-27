@@ -1,6 +1,5 @@
 package com.lihb.wheelview
 
-import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -34,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         adapter.setOnItemClickListener { wheel, adapter, index, isSelected ->
             Toast.makeText(MainActivity@ this, "点击$index,$isSelected", Toast.LENGTH_SHORT).show()
         }
-        adapter.setOnItemSelectedListener { _, _, index ->
+        adapter.setOnItemSelectedListener { wheel, adapter, index ->
             Toast.makeText(MainActivity@ this, "最后选中的是$index", Toast.LENGTH_SHORT).show()
             Log.i(MainActivity@ this.javaClass.simpleName, "onSelected:$index")
         }
