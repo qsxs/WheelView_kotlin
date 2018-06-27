@@ -996,12 +996,16 @@ public class WheelView extends View {
         }
 
         public void scrollTo(int index) {
-            scrollTo(index, false);
+            scrollTo(index, false, 0);
         }
 
         public void scrollTo(int index, boolean smooth) {
+            scrollTo(index, smooth, 500);
+        }
+
+        public void scrollTo(int index, boolean smooth, int duration) {
             if (wheelView != null) {
-                wheelView.setCurrentItem(index, smooth, 500);
+                wheelView.setCurrentItem(index, smooth, duration);
             }
         }
     }

@@ -46,5 +46,13 @@ public abstract class BaseQuickWheelAdapter<T> extends AbstractWheelAdapter {
         return null;
     }
 
+    public T getItemBean(int index) {
+        if (mData != null && index >= 0 && index == getItemsCount()) {
+            return mData.get(index);
+        } else {
+            return null;
+        }
+    }
+
     protected abstract void onBindData(int index, T bean, View convertView);
 }
