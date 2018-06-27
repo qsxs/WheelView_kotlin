@@ -28,8 +28,10 @@ import android.graphics.Paint;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
@@ -88,7 +90,7 @@ public class WheelView extends View {
     // Listeners
     private List<OnWheelChangedListener> changingListeners = new LinkedList<OnWheelChangedListener>();
     private List<OnWheelScrollListener> scrollingListeners = new LinkedList<OnWheelScrollListener>();
-    private List<OnWheelClickedListener> clickingListeners = new LinkedList<OnWheelClickedListener>();
+//    private List<OnWheelItemClickedListener> clickingListeners = new LinkedList<OnWheelItemClickedListener>();
 
     /**
      * Constructor
@@ -305,45 +307,19 @@ public class WheelView extends View {
      * Notifies listeners about ending scrolling
      */
     protected void notifyScrollingListenersAboutEnd() {
+        Log.i("TAG","onSelected:"+currentItem);
         for (OnWheelScrollListener listener : scrollingListeners) {
             listener.onScrollingFinished(this);
         }
     }
 
     /**
-     * Adds wheel clicking listener
-     *
-     * @param listener the listener
-     */
-    public void addClickingListener(OnWheelClickedListener listener) {
-        clickingListeners.add(listener);
-    }
-
-    /**
-     * Removes wheel clicking listener
-     *
-     * @param listener the listener
-     */
-    public void removeClickingListener(OnWheelClickedListener listener) {
-        clickingListeners.remove(listener);
-    }
-
-    /**
      * Notifies listeners about clicking
      */
-    protected void notifyClickListenersAboutClick(int item) {
-        for (OnWheelClickedListener listener : clickingListeners) {
-            listener.onItemClicked(this, item);
+    protected void notifyClickListenersAboutClick(int item, boolean isSelected) {
+        if (viewAdapter != null && viewAdapter.getOnItemClickListener() != null) {
+            viewAdapter.getOnItemClickListener().onItemClicked(this, viewAdapter, item, isSelected);
         }
-    }
-
-    /**
-     * Gets current value
-     *
-     * @return the current value
-     */
-    public int getCurrentItem() {
-        return currentItem;
     }
 
     /**
@@ -352,7 +328,7 @@ public class WheelView extends View {
      * @param index    the item index
      * @param animated the animation flag
      */
-    public void setCurrentItem(int index, boolean animated) {
+    void setCurrentItem(int index, boolean animated) {
         if (viewAdapter == null || viewAdapter.getItemsCount() == 0) {
             return; // throw?
         }
@@ -443,7 +419,7 @@ public class WheelView extends View {
      *
      * @param clearCaches if true then cached views will be clear
      */
-    public void invalidateWheel(boolean clearCaches) {
+    void invalidateWheel(boolean clearCaches) {
         if (clearCaches) {
             recycle.clearAll();
             if (itemsLayout != null) {
@@ -671,7 +647,7 @@ public class WheelView extends View {
                 break;
 
             case MotionEvent.ACTION_UP:
-                if (!isScrollingPerformed) {
+                if (!isScrollingPerformed && viewAdapter != null) {
                     int distance = (int) event.getY() - getHeight() / 2;
                     if (distance > 0) {
                         distance += getItemHeight() / 2;
@@ -679,8 +655,12 @@ public class WheelView extends View {
                         distance -= getItemHeight() / 2;
                     }
                     int items = distance / getItemHeight();
-                    if (items != 0 && isValidItemIndex(currentItem + items)) {
-                        notifyClickListenersAboutClick(currentItem + items);
+                    if (isValidItemIndex(currentItem + items)) {
+                        int index = currentItem + items;
+                        if (index < 0 && isCyclic) {
+                            index = viewAdapter.getItemsCount() + items;
+                        }
+                        notifyClickListenersAboutClick(index, items == 0);
                     }
                 }
                 break;
@@ -756,7 +736,7 @@ public class WheelView extends View {
      *
      * @param time scrolling duration
      */
-    public void scroll(int itemsToScroll, int time) {
+    void scroll(int itemsToScroll, int time) {
         int distance = itemsToScroll * getItemHeight() - scrollingOffset;
         scroller.scroll(distance, time);
     }
@@ -937,5 +917,96 @@ public class WheelView extends View {
      */
     public void stopScrolling() {
         scroller.stopScrolling();
+    }
+
+
+    public static abstract class WheelViewAdapter {
+        private WheelView wheelView;
+        private OnWheelItemClickedListener onItemClickListener;
+
+        /**
+         * Gets items count
+         *
+         * @return the count of wheel items
+         */
+        public abstract int getItemsCount();
+
+        /**
+         * Get a View that displays the data at the specified position in the data set
+         *
+         * @param index       the item index
+         * @param convertView the old view to reuse if possible
+         * @param parent      the parent that this view will eventually be attached to
+         * @return the wheel item View
+         */
+        protected abstract View getItem(int index, View convertView, ViewGroup parent);
+
+        /**
+         * Get a View that displays an empty wheel item placed before the first or after
+         * the last wheel item.
+         *
+         * @param convertView the old view to reuse if possible
+         * @param parent      the parent that this view will eventually be attached to
+         * @return the empty item View
+         */
+        protected abstract View getEmptyItem(View convertView, ViewGroup parent);
+
+        /**
+         * Register an observer that is called when changes happen to the data used by this adapter.
+         *
+         * @param observer the observer to be registered
+         */
+        abstract void registerDataSetObserver(DataSetObserver observer);
+
+        /**
+         * Unregister an observer that has previously been registered
+         *
+         * @param observer the observer to be unregistered
+         */
+        abstract void unregisterDataSetObserver(DataSetObserver observer);
+
+        public void setOnItemClickListener(OnWheelItemClickedListener listener) {
+            onItemClickListener = listener;
+        }
+
+        public OnWheelItemClickedListener getOnItemClickListener() {
+            return onItemClickListener;
+        }
+
+        void setWheelView(WheelView wheelView) {
+            this.wheelView = wheelView;
+        }
+
+        public WheelView getWheelView() {
+            return wheelView;
+        }
+
+        public int getCurrentIndex() {
+            if (wheelView == null) {
+                throw new IllegalArgumentException("请先把adapter设置给WheelView");
+            }
+            return wheelView.currentItem;
+        }
+
+        public void scrollTo(int index) {
+            scrollTo(index, false);
+        }
+
+        public void scrollTo(int index, boolean smooth) {
+            if (wheelView != null) {
+                if (smooth) {
+                    int itemsToScroll = index - wheelView.currentItem;
+                    if (wheelView.isCyclic) {
+                        int scroll = getItemsCount() + Math.min(index, wheelView.currentItem) - Math.max(index, wheelView.currentItem);
+                        if (scroll < Math.abs(itemsToScroll)) {
+                            itemsToScroll = itemsToScroll < 0 ? scroll : -scroll;
+                        }
+                    }
+                    wheelView.scroll(itemsToScroll, 500);
+                } else {
+                    wheelView.setCurrentItem(index);
+                }
+            }
+        }
     }
 }

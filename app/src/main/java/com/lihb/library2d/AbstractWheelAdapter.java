@@ -26,17 +26,17 @@ import java.util.List;
 /**
  * Abstract Wheel adapter.
  */
-public abstract class AbstractWheelAdapter extends WheelViewAdapter {
+public abstract class AbstractWheelAdapter extends WheelView.WheelViewAdapter {
     // Observers
     private List<DataSetObserver> datasetObservers;
-    
+
     @Override
     public View getEmptyItem(View convertView, ViewGroup parent) {
         return null;
     }
 
     @Override
-    public void registerDataSetObserver(DataSetObserver observer) {
+    void registerDataSetObserver(DataSetObserver observer) {
         if (datasetObservers == null) {
             datasetObservers = new LinkedList<DataSetObserver>();
         }
@@ -44,12 +44,12 @@ public abstract class AbstractWheelAdapter extends WheelViewAdapter {
     }
 
     @Override
-    public void unregisterDataSetObserver(DataSetObserver observer) {
+    void unregisterDataSetObserver(DataSetObserver observer) {
         if (datasetObservers != null) {
             datasetObservers.remove(observer);
         }
     }
-    
+
     /**
      * Notifies observers about data changing
      */
@@ -60,7 +60,7 @@ public abstract class AbstractWheelAdapter extends WheelViewAdapter {
             }
         }
     }
-    
+
     /**
      * Notifies observers about invalidating data
      */

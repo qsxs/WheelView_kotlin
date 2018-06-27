@@ -28,12 +28,39 @@
     <com.lihb.library2d.WheelView
         android:id="@+id/wheel_view2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cyclic="true"
-        app:visible_items="3"
-        app:gradual ="true"
+        android:layout_height="match_parent"
         android:background="@color/colorAccent"
+        app:cyclic="true"
+        app:diving_color="@color/colorPrimaryDark"
         app:diving_width="10dp"
-        app:diving_color="@color/colorPrimaryDark"/>
+        app:gradual="true"
+        app:visible_items="5" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="随机滚动" />
+        <Button
+            android:id="@+id/btn_scroll_next"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="滚到下一个" />
+        <Button
+            android:id="@+id/btn_select"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="随机选中" />
+
+        <Button
+            android:id="@+id/btn_get_select"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="当前选中" />
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

@@ -22,11 +22,13 @@ package com.lihb.library2d;
  * <li> New Wheel position is set
  * <li> Wheel view is scrolled
  */
-public interface OnWheelClickedListener {
+public interface OnWheelItemClickedListener {
     /**
      * Callback method to be invoked when current item clicked
-     * @param wheel the wheel view
-     * @param itemIndex the index of clicked item
+     *
+     * @param wheel      the wheel view
+     * @param index      the index of clicked item
+     * @param isSelected 点击的item是否选中
      */
-    void onItemClicked(WheelView wheel, int itemIndex);
+    void onItemClicked(WheelView wheel, WheelView.WheelViewAdapter adapter, int index, boolean isSelected);
 }
