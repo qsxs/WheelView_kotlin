@@ -22,7 +22,7 @@ package com.lihb.library2d;
  * <li> New Wheel position is set
  * <li> Wheel view is scrolled
  */
-public interface OnWheelItemClickedListener {
+public interface OnItemClickedListener {
     /**
      * Callback method to be invoked when current item clicked
      *

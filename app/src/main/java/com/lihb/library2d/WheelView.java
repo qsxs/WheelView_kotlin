@@ -28,7 +28,6 @@ import android.graphics.Paint;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,7 +89,7 @@ public class WheelView extends View {
     // Listeners
     private List<OnWheelChangedListener> changingListeners = new LinkedList<OnWheelChangedListener>();
     private List<OnWheelScrollListener> scrollingListeners = new LinkedList<OnWheelScrollListener>();
-//    private List<OnWheelItemClickedListener> clickingListeners = new LinkedList<OnWheelItemClickedListener>();
+//    private List<OnItemClickedListener> clickingListeners = new LinkedList<OnItemClickedListener>();
 
     /**
      * Constructor
@@ -307,7 +306,7 @@ public class WheelView extends View {
      * Notifies listeners about ending scrolling
      */
     protected void notifyScrollingListenersAboutEnd() {
-        Log.i("TAG", "onSelected:" + currentItem);
+        notifyOnSelectedListener(currentItem);
         for (OnWheelScrollListener listener : scrollingListeners) {
             listener.onScrollingFinished(this);
         }
@@ -319,6 +318,12 @@ public class WheelView extends View {
     protected void notifyClickListenersAboutClick(int item, boolean isSelected) {
         if (viewAdapter != null && viewAdapter.getOnItemClickListener() != null) {
             viewAdapter.getOnItemClickListener().onItemClicked(this, viewAdapter, item, isSelected);
+        }
+    }
+
+    private void notifyOnSelectedListener(int currentItem) {
+        if (viewAdapter != null && viewAdapter.onItemSelectedListener != null) {
+            viewAdapter.onItemSelectedListener.onItemSelected(this, viewAdapter, currentItem);
         }
     }
 
@@ -359,22 +364,15 @@ public class WheelView extends View {
 
                 int old = currentItem;
                 currentItem = index;
-
+                if (!isScrollingPerformed) {
+                    notifyOnSelectedListener(currentItem);
+                }
                 notifyChangingListeners(old, currentItem);
 
                 invalidate();
             }
         }
     }
-
-//    /**
-//     * Sets the current item w/o animation. Does nothing when index is wrong.
-//     *
-//     * @param index the item index
-//     */
-//    public void setCurrentItem(int index) {
-//        setCurrentItem(index, false);
-//    }
 
     /**
      * Tests if wheel is cyclic. That means before the 1st item there is shown the last one
@@ -922,7 +920,8 @@ public class WheelView extends View {
 
     public static abstract class WheelViewAdapter {
         private WheelView wheelView;
-        private OnWheelItemClickedListener onItemClickListener;
+        private OnItemClickedListener onItemClickListener;
+        private OnItemSelectedListener onItemSelectedListener;
 
         /**
          * Gets items count
@@ -965,12 +964,20 @@ public class WheelView extends View {
          */
         abstract void unregisterDataSetObserver(DataSetObserver observer);
 
-        public void setOnItemClickListener(OnWheelItemClickedListener listener) {
+        public void setOnItemClickListener(OnItemClickedListener listener) {
             onItemClickListener = listener;
         }
 
-        public OnWheelItemClickedListener getOnItemClickListener() {
+        public OnItemClickedListener getOnItemClickListener() {
             return onItemClickListener;
+        }
+
+        public void setOnItemSelectedListener(OnItemSelectedListener listener) {
+            onItemSelectedListener = listener;
+        }
+
+        public OnItemSelectedListener getOnItemSelectedListener() {
+            return onItemSelectedListener;
         }
 
         void setWheelView(WheelView wheelView) {

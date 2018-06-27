@@ -56,6 +56,10 @@ class MainActivity : AppCompatActivity() {
         adapter.setOnItemClickListener { wheel, adapter, index, isSelected ->
             Toast.makeText(MainActivity@ this, "点击$index,$isSelected", Toast.LENGTH_SHORT).show()
         }
+        adapter.setOnItemSelectedListener { _, _, index ->
+            Toast.makeText(MainActivity@ this, "最后选中的是$index", Toast.LENGTH_SHORT).show()
+            Log.i(MainActivity@ this.javaClass.simpleName, "onSelected:$index")
+        }
         adapter.setNewData(list)
         wheel_view2.adapter = adapter
 
@@ -83,7 +87,7 @@ class MainActivity : AppCompatActivity() {
 //            Toast.makeText(MainActivity@ this, "选中$itemIndex", Toast.LENGTH_SHORT).show()
 //        }
         wheel_view2.addChangingListener { wheel, oldValue, newValue ->
-            Log.i(MainActivity@this.javaClass.simpleName, "Changing $newValue")
+            Log.i(MainActivity@ this.javaClass.simpleName, "Changing $newValue")
         }
     }
 }
