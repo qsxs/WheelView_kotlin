@@ -171,7 +171,7 @@ public class WheelView extends View {
         @Override
         public void onJustify() {
             if (Math.abs(scrollingOffset) > WheelScroller.MIN_DELTA_FOR_SCROLLING) {
-                scroller.scroll(scrollingOffset, 0);
+                scroller.scroll(scrollingOffset, WheelScroller.SCROLLING_DURATION);
             }
         }
     };
@@ -307,7 +307,7 @@ public class WheelView extends View {
      * Notifies listeners about ending scrolling
      */
     protected void notifyScrollingListenersAboutEnd() {
-        Log.i("TAG","onSelected:"+currentItem);
+        Log.i("TAG", "onSelected:" + currentItem);
         for (OnWheelScrollListener listener : scrollingListeners) {
             listener.onScrollingFinished(this);
         }
@@ -328,7 +328,7 @@ public class WheelView extends View {
      * @param index    the item index
      * @param animated the animation flag
      */
-    void setCurrentItem(int index, boolean animated) {
+    void setCurrentItem(int index, boolean animated, int animationDuration) {
         if (viewAdapter == null || viewAdapter.getItemsCount() == 0) {
             return; // throw?
         }
@@ -353,7 +353,7 @@ public class WheelView extends View {
                         itemsToScroll = itemsToScroll < 0 ? scroll : -scroll;
                     }
                 }
-                scroll(itemsToScroll, 0);
+                scroll(itemsToScroll, animationDuration);
             } else {
                 scrollingOffset = 0;
 
@@ -367,14 +367,14 @@ public class WheelView extends View {
         }
     }
 
-    /**
-     * Sets the current item w/o animation. Does nothing when index is wrong.
-     *
-     * @param index the item index
-     */
-    public void setCurrentItem(int index) {
-        setCurrentItem(index, false);
-    }
+//    /**
+//     * Sets the current item w/o animation. Does nothing when index is wrong.
+//     *
+//     * @param index the item index
+//     */
+//    public void setCurrentItem(int index) {
+//        setCurrentItem(index, false);
+//    }
 
     /**
      * Tests if wheel is cyclic. That means before the 1st item there is shown the last one
@@ -719,7 +719,7 @@ public class WheelView extends View {
 
         int offset = scrollingOffset;
         if (pos != currentItem) {
-            setCurrentItem(pos, false);
+            setCurrentItem(pos, false, 0);
         } else {
             invalidate();
         }
@@ -994,18 +994,7 @@ public class WheelView extends View {
 
         public void scrollTo(int index, boolean smooth) {
             if (wheelView != null) {
-                if (smooth) {
-                    int itemsToScroll = index - wheelView.currentItem;
-                    if (wheelView.isCyclic) {
-                        int scroll = getItemsCount() + Math.min(index, wheelView.currentItem) - Math.max(index, wheelView.currentItem);
-                        if (scroll < Math.abs(itemsToScroll)) {
-                            itemsToScroll = itemsToScroll < 0 ? scroll : -scroll;
-                        }
-                    }
-                    wheelView.scroll(itemsToScroll, 500);
-                } else {
-                    wheelView.setCurrentItem(index);
-                }
+                wheelView.setCurrentItem(index, smooth, 500);
             }
         }
     }
