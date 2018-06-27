@@ -13,21 +13,26 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+package lihb.library.wheelview
 
-package lihb.library.wheelview;
+import android.content.Context
 
 /**
- * Wheel changed listener interface.
- * <p>The onChanged() method is called whenever current wheel positions is changed:
- * <li> New Wheel position is set
- * <li> Wheel view is scrolled
- */
-public interface OnWheelChangedListener {
-	/**
-	 * Callback method to be invoked when current item changed
-	 * @param wheel the wheel view whose state has changed
-	 * @param oldValue the old value of current item
-	 * @param newValue the new value of current item
-	 */
-	void onChanged(WheelView wheel, int oldValue, int newValue);
+ * The simple Array wheel adapter
+ * @param <T> the element type
+</T> */
+class ArrayWheelAdapter<T>(context: Context, private val items: Array<T>) : AbstractWheelTextAdapter(context) {
+
+    override val itemsCount: Int
+        get() = items.size
+
+    public override fun getItemText(index: Int): CharSequence {
+        if (index >= 0 && index < items.size) {
+            val item = items[index]
+            return if (item is CharSequence) {
+                item
+            } else item.toString()
+        }
+        return ""
+    }
 }

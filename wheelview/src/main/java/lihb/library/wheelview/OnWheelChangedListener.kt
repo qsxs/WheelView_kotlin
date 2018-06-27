@@ -14,21 +14,21 @@
  *  limitations under the License.
  */
 
-package lihb.library.wheelview;
+package lihb.library.wheelview
 
 /**
- * Wheel clicked listener interface.
- * <p>The onItemClicked() method is called whenever a wheel item is clicked
- * <li> New Wheel position is set
- * <li> Wheel view is scrolled
+ * Wheel changed listener interface.
+ *
+ * The onChanged() method is called whenever current wheel positions is changed:
+ *  *  New Wheel position is set
+ *  *  Wheel view is scrolled
  */
-public interface OnItemClickedListener {
+interface OnWheelChangedListener {
     /**
-     * Callback method to be invoked when current item clicked
-     *
-     * @param wheel      the wheel view
-     * @param index      the index of clicked item
-     * @param isSelected 点击的item是否选中
+     * Callback method to be invoked when current item changed
+     * @param wheel the wheel view whose state has changed
+     * @param oldValue the old value of current item
+     * @param newValue the new value of current item
      */
-    void onItemClicked(WheelView wheel, WheelView.WheelViewAdapter adapter, int index, boolean isSelected);
+    fun onChanged(wheel: WheelView, oldValue: Int, newValue: Int)
 }

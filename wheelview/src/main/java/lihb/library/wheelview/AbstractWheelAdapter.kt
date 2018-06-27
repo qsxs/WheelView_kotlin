@@ -14,49 +14,44 @@
  *  limitations under the License.
  */
 
-package lihb.library.wheelview;
+package lihb.library.wheelview
 
-import android.database.DataSetObserver;
-import android.view.View;
-import android.view.ViewGroup;
-
-import java.util.LinkedList;
-import java.util.List;
+import android.database.DataSetObserver
+import android.view.View
+import android.view.ViewGroup
+import java.util.*
 
 /**
  * Abstract Wheel adapter.
  */
-public abstract class AbstractWheelAdapter extends WheelView.WheelViewAdapter {
+abstract class AbstractWheelAdapter : WheelView.WheelViewAdapter() {
     // Observers
-    private List<DataSetObserver> datasetObservers;
+    private var datasetObservers: MutableList<DataSetObserver>? = null
 
-    @Override
-    public View getEmptyItem(View convertView, ViewGroup parent) {
-        return null;
+    override fun getEmptyItem(convertView: View?, parent: ViewGroup?): View? {
+        return null
     }
 
-    @Override
-    void registerDataSetObserver(DataSetObserver observer) {
+    override fun registerDataSetObserver(observer: DataSetObserver) {
         if (datasetObservers == null) {
-            datasetObservers = new LinkedList<DataSetObserver>();
+            datasetObservers = LinkedList()
         }
-        datasetObservers.add(observer);
+        datasetObservers!!.add(observer)
     }
 
-    @Override
-    void unregisterDataSetObserver(DataSetObserver observer) {
+    override fun unregisterDataSetObserver(observer: DataSetObserver) {
         if (datasetObservers != null) {
-            datasetObservers.remove(observer);
+            datasetObservers!!.remove(observer)
         }
     }
 
     /**
      * Notifies observers about data changing
      */
-    protected void notifyDataChangedEvent() {
+    protected fun notifyDataChangedEvent() {
         if (datasetObservers != null) {
-            for (DataSetObserver observer : datasetObservers) {
-                observer.onChanged();
+            for (observer in datasetObservers!!) {
+                observer.onChanged()
             }
         }
     }
@@ -64,10 +59,10 @@ public abstract class AbstractWheelAdapter extends WheelView.WheelViewAdapter {
     /**
      * Notifies observers about invalidating data
      */
-    protected void notifyDataInvalidatedEvent() {
+    protected fun notifyDataInvalidatedEvent() {
         if (datasetObservers != null) {
-            for (DataSetObserver observer : datasetObservers) {
-                observer.onInvalidated();
+            for (observer in datasetObservers!!) {
+                observer.onInvalidated()
             }
         }
     }

@@ -26,10 +26,11 @@ class MainActivity : AppCompatActivity() {
 //        adapter.textColor = Color.BLACK
 
         val adapter = object : BaseQuickWheelAdapter<String>(android.R.layout.simple_list_item_1) {
-            override fun onBindData(index: Int, bean: String?, convertView: View?) {
+            override fun onBindData(index: Int, bean: String, convertView: View) {
                 (convertView as TextView).text = bean
             }
         }
+
         adapter.setOnItemClickListener { wheel, adapter, index, isSelected ->
             Toast.makeText(MainActivity@ this, "点击$index,$isSelected", Toast.LENGTH_SHORT).show()
         }
