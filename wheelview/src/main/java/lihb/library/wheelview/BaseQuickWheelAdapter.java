@@ -1,4 +1,4 @@
-package com.lihb.library2d;
+package lihb.library.wheelview;
 
 import android.support.annotation.LayoutRes;
 import android.view.LayoutInflater;

@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.lihb.library2d;
+package lihb.library.wheelview;
 
 import android.content.Context;
 import android.text.TextUtils;

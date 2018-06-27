@@ -17,7 +17,7 @@
  *  limitations under the License.
  */
 
-package com.lihb.library2d;
+package lihb.library.wheelview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -34,8 +34,6 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
-
-import com.lihb.wheelview.R;
 
 import java.util.LinkedList;
 import java.util.List;

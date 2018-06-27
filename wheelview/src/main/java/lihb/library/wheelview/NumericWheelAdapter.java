@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package com.lihb.library2d;
+package lihb.library.wheelview;
 
 import android.content.Context;
 import android.view.View;

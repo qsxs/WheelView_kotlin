@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package com.lihb.library2d;
+package lihb.library.wheelview;
 
 import android.database.DataSetObserver;
 import android.view.View;

@@ -17,7 +17,7 @@
  *  limitations under the License.
  */
 
-package com.lihb.library2d;
+package lihb.library.wheelview;
 
 import android.view.View;
 import android.widget.LinearLayout;
