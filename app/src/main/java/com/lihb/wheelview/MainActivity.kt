@@ -2,10 +2,14 @@ package com.lihb.wheelview
 
 import android.graphics.Color
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.LayoutInflater
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
+import lihb.library.wheelview.NumericWheelAdapter
+import lihb.library.wheelview.WheelView
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,11 +21,12 @@ class MainActivity : AppCompatActivity() {
             list.add("SSSS$i")
         }
 
-//        val adapter = NumericWheelAdapter(this, 0, 50)
-//        adapter.setLabel("")
-//        adapter.textSize = 15
-//        adapter.textColor = Color.BLACK
-        val adapter = MyAdapter()
+        val adapter = NumericWheelAdapter(this, 0, 50)
+        adapter.setLabel("")
+        adapter.textSize = 15
+        adapter.textColor = Color.BLACK
+
+//        val adapter = MyAdapter()
 //        val adapter = object : BaseQuickWheelAdapter<String>(android.R.layout.simple_list_item_1) {
 //            override fun onBindData(index: Int, bean: String, convertView: View) {
 //                (convertView as TextView).text = bean
@@ -35,9 +40,9 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(MainActivity@ this, "最后选中的是$index", Toast.LENGTH_SHORT).show()
             Log.i(MainActivity@ this.javaClass.simpleName, "onSelected:$index")
         }
-        adapter.setNewData(list)
+//        adapter.setNewData(list)
         wheel_view2.adapter = adapter
-        adapter.setNewData(arrayListOf("0000000", "11111111", "22222222", "333333333"))
+//        adapter.setNewData(arrayListOf("0000000", "11111111", "22222222", "333333333"))
 
         wheel_view2.setCyclic(false)
         wheel_view2.isGradual = false
@@ -62,6 +67,16 @@ class MainActivity : AppCompatActivity() {
         }
         btn_get_select.setOnClickListener {
             Toast.makeText(MainActivity@ this, "当前选中${adapter.currentIndex}", Toast.LENGTH_SHORT).show()
+            val view = LayoutInflater.from(this@MainActivity).inflate(R.layout.dialog_selected_date_v2, null, false)
+            val wheelYear = view.findViewById<WheelView>(R.id.wheel_year)
+            val wheelMonth = view.findViewById<WheelView>(R.id.wheel_month)
+            val wheelDay = view.findViewById<WheelView>(R.id.wheel_day)
+            wheelYear.adapter = NumericWheelAdapter(this@MainActivity, 1990, 2118)
+            wheelMonth.adapter = NumericWheelAdapter(this@MainActivity, 1, 12)
+            wheelDay.adapter = NumericWheelAdapter(this@MainActivity, 1, 31)
+            AlertDialog.Builder(this@MainActivity)
+                    .setView(view)
+                    .show()
         }
 //        wheel_view2.setShadowColor(255,255,255)
 //        wheel_view2.currentItem = 20

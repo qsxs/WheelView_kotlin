@@ -19,7 +19,7 @@ class NumericWheelAdapter : AbstractWheelTextAdapter {
     // format
     private var format: String? = null
 
-    private var label: String? = null
+    private var label: String = ""
 
     private var multiple: Int = 0
     
@@ -69,11 +69,8 @@ class NumericWheelAdapter : AbstractWheelTextAdapter {
             }
             val textView = getTextView(convertView!!, itemTextResource)
             if (textView != null) {
-                var text: CharSequence? = getItemText(index)
-                if (text == null) {
-                    text = ""
-                }
-                textView.text = text.toString() + label!!
+                val text = getItemText(index)
+                textView.text = text.toString() + label
                 textView.setPadding(0, 3, 0, 3)
                 if (itemResource == AbstractWheelTextAdapter.TEXT_VIEW_ITEM_RESOURCE) {
                     configureTextView(textView)
