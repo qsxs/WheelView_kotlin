@@ -64,21 +64,22 @@ class WheelRecycle
      * @return the new value of first item number
      */
     fun recycleItems(layout: LinearLayout, firstItem: Int, range: ItemsRange): Int {
-        var index = firstItem
+        var firstItemVar = firstItem
+        var index = firstItemVar
         var i = 0
         while (i < layout.childCount) {
             if (!range.contains(index)) {
                 recycleView(layout.getChildAt(i), index)
                 layout.removeViewAt(i)
                 if (i == 0) { // first item
-                    index++
+                    firstItemVar++
                 }
             } else {
                 i++ // go to next item
             }
             index++
         }
-        return index
+        return firstItemVar
     }
 
     /**
