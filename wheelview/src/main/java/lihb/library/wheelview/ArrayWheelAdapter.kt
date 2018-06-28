@@ -22,9 +22,9 @@ import android.content.Context
  * @param <T> the element type
 </T> */
 class ArrayWheelAdapter<T>(context: Context, private val items: Array<T>) : AbstractWheelTextAdapter(context) {
-
-    override val itemsCount: Int
-        get() = items.size
+    override fun getItemsCount(): Int {
+        return items.size
+    }
 
     public override fun getItemText(index: Int): CharSequence {
         if (index >= 0 && index < items.size) {

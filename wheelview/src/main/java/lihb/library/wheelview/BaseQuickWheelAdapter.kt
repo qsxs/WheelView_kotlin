@@ -13,8 +13,9 @@ abstract class BaseQuickWheelAdapter<T> : AbstractWheelAdapter {
     val data: List<T>
         get() = if (mData == null) ArrayList() else mData!!
 
-    override val itemsCount: Int
-        get() = if (mData == null) 0 else mData!!.size
+    override fun getItemsCount(): Int {
+        return if (mData == null) 0 else mData!!.size
+    }
 
     constructor(@LayoutRes itemLayoutId: Int) {
         itemResourceId = itemLayoutId
@@ -31,7 +32,7 @@ abstract class BaseQuickWheelAdapter<T> : AbstractWheelAdapter {
 
     override fun getItem(index: Int, itemView: View?, parent: ViewGroup?): View? {
         var convertView = itemView
-        if (index in 0..(itemsCount - 1)) {
+        if (index in 0..(getItemsCount() - 1)) {
             if (convertView == null) {
                 convertView = LayoutInflater.from(parent!!.context).inflate(itemResourceId, parent, false)
             }
@@ -42,7 +43,7 @@ abstract class BaseQuickWheelAdapter<T> : AbstractWheelAdapter {
     }
 
     fun getItemBean(index: Int): T? {
-        return if (mData != null && index >= 0 && index == itemsCount) {
+        return if (mData != null && index >= 0 && index == getItemsCount()) {
             mData!![index]
         } else {
             null

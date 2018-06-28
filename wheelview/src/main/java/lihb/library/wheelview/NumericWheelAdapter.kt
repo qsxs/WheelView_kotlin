@@ -24,6 +24,9 @@ import android.view.ViewGroup
  * Numeric Wheel adapter.
  */
 class NumericWheelAdapter : AbstractWheelTextAdapter {
+    override fun getItemsCount(): Int {
+      return  maxValue - minValue + 1
+    }
 
     // Values
     private var minValue: Int = 0
@@ -35,10 +38,7 @@ class NumericWheelAdapter : AbstractWheelTextAdapter {
     private var label: String? = null
 
     private var multiple: Int = 0
-
-    override val itemsCount: Int
-        get() = maxValue - minValue + 1
-
+    
     /**
      * Constructor
      *
@@ -63,7 +63,7 @@ class NumericWheelAdapter : AbstractWheelTextAdapter {
     }
 
     public override fun getItemText(index: Int): CharSequence {
-        if (index in 0..(itemsCount - 1)) {
+        if (index in 0..(getItemsCount() - 1)) {
 
             val value: Int =
                     if (multiple != 0) {
@@ -79,7 +79,7 @@ class NumericWheelAdapter : AbstractWheelTextAdapter {
 
     override fun getItem(index: Int, itemView: View?, parent: ViewGroup?): View? {
         var convertView = itemView
-        if (index in 0..(itemsCount - 1)) {
+        if (index in 0..(getItemsCount() - 1)) {
             if (convertView == null) {
                 convertView = getView(itemResource, parent)
             }
@@ -91,7 +91,7 @@ class NumericWheelAdapter : AbstractWheelTextAdapter {
                 }
                 textView.text = text.toString() + label!!
                 textView.setPadding(0, 3, 0, 3)
-                if (itemResource == AbstractWheelTextAdapter.Companion.TEXT_VIEW_ITEM_RESOURCE) {
+                if (itemResource == AbstractWheelTextAdapter.TEXT_VIEW_ITEM_RESOURCE) {
                     configureTextView(textView)
                 }
             }

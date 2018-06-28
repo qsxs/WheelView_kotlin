@@ -28,7 +28,7 @@ abstract class AbstractWheelAdapter : WheelView.WheelViewAdapter() {
     // Observers
     private var datasetObservers: MutableList<DataSetObserver>? = null
 
-    override fun getEmptyItem(convertView: View?, parent: ViewGroup?): View? {
+    override fun getEmptyItem(emptyView: View?, parent: ViewGroup?): View? {
         return null
     }
 

@@ -36,62 +36,17 @@ abstract class AbstractWheelTextAdapter
  */
 @JvmOverloads protected constructor(// Current context
         private var context: Context, // Items resources
-        /**
-         * Gets resource Id for items views
-         * @return the item resource Id
-         */
-        /**
-         * Sets resource Id for items views
-         * @param itemResourceId the resource Id to set
-         */
         var itemResource: Int = TEXT_VIEW_ITEM_RESOURCE,
-        /**
-         * Gets resource Id for text view in item layout
-         * @return the item text resource Id
-         */
-        /**
-         * Sets resource Id for text view in item layout
-         * @param itemTextResourceId the item text resource Id to set
-         */
         var itemTextResource: Int = NO_RESOURCE) : AbstractWheelAdapter() {
 
     // Text settings
-    /**
-     * Gets text color
-     * @return the text color
-     */
-    /**
-     * Sets text color
-     * @param textColor the text color to set
-     */
     var textColor = DEFAULT_TEXT_COLOR
-    /**
-     * Gets text size
-     * @return the text size
-     */
-    /**
-     * Sets text size
-     * @param textSize the text size to set
-     */
     var textSize = DEFAULT_TEXT_SIZE
     // Layout inflater
-    protected var inflater: LayoutInflater
+    private var inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     // Empty items resources
-    /**
-     * Gets resource Id for empty items views
-     * @return the empty item resource Id
-     */
-    /**
-     * Sets resource Id for empty items views
-     * @param emptyItemResourceId the empty item resource Id to set
-     */
     var emptyItemResource: Int = 0
-
-    init {
-
-        inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-    }
 
 
     /**
@@ -101,9 +56,9 @@ abstract class AbstractWheelTextAdapter
      */
     protected abstract fun getItemText(index: Int): CharSequence
 
-    override fun getItem(index: Int, convertView: View?, parent: ViewGroup?): View? {
-        var convertView = convertView
-        if (index in 0..(itemsCount - 1)) {
+    override fun getItem(index: Int, itemView: View?, parent: ViewGroup?): View? {
+        var convertView = itemView
+        if (index in 0..(getItemsCount() - 1)) {
             if (convertView == null) {
                 convertView = getView(itemResource, parent)
             }
@@ -124,8 +79,8 @@ abstract class AbstractWheelTextAdapter
         return null
     }
 
-    override fun getEmptyItem(itemView: View?, parent: ViewGroup?): View? {
-        var convertView = itemView
+    override fun getEmptyItem(emptyView: View?, parent: ViewGroup?): View? {
+        var convertView = emptyView
         if (convertView == null) {
             convertView = getView(emptyItemResource, parent)
         }
@@ -189,27 +144,18 @@ abstract class AbstractWheelTextAdapter
     companion object {
 
         /** Text view resource. Used as a default view for adapter.  */
-        val TEXT_VIEW_ITEM_RESOURCE = -1
+        const val TEXT_VIEW_ITEM_RESOURCE = -1
 
         /** No resource constant.  */
-        protected val NO_RESOURCE = 0
+        protected const val NO_RESOURCE = 0
 
         /** Default text color  */
-        val DEFAULT_TEXT_COLOR = -0xa7a7a8
+        const val DEFAULT_TEXT_COLOR = -0xa7a7a8
 
         /** Default text color  */
-        val LABEL_COLOR = -0x8fff90
+        const val LABEL_COLOR = -0x8fff90
 
         /** Default text size  */
-        val DEFAULT_TEXT_SIZE = 18
+        const val DEFAULT_TEXT_SIZE = 18
     }
 }
-/**
- * Constructor
- * @param context the current context
- */
-/**
- * Constructor
- * @param context the current context
- * @param itemResource the resource ID for a layout file containing a TextView to use when instantiating items views
- */

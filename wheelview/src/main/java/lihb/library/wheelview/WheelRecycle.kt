@@ -64,7 +64,6 @@ class WheelRecycle
      * @return the new value of first item number
      */
     fun recycleItems(layout: LinearLayout, firstItem: Int, range: ItemsRange): Int {
-        var firstItem = firstItem
         var index = firstItem
         var i = 0
         while (i < layout.childCount) {
@@ -72,14 +71,14 @@ class WheelRecycle
                 recycleView(layout.getChildAt(i), index)
                 layout.removeViewAt(i)
                 if (i == 0) { // first item
-                    firstItem++
+                    index++
                 }
             } else {
                 i++ // go to next item
             }
             index++
         }
-        return firstItem
+        return index
     }
 
     /**
@@ -101,13 +100,13 @@ class WheelRecycle
      * @return the cache list
      */
     private fun addView(view: View, cache: MutableList<View>?): MutableList<View> {
-        var cache = cache
-        if (cache == null) {
-            cache = LinkedList()
+        var cacheVar = cache
+        if (cacheVar == null) {
+            cacheVar = LinkedList()
         }
 
-        cache.add(view)
-        return cache
+        cacheVar.add(view)
+        return cacheVar
     }
 
     /**
@@ -116,17 +115,17 @@ class WheelRecycle
      * @param index the index of view
      */
     private fun recycleView(view: View, index: Int) {
-        var index = index
-        val count = wheel.adapter!!.itemsCount
+        var indexVar = index
+        val count = wheel.adapter!!.getItemsCount()
 
-        if ((index < 0 || index >= count) && !wheel.isCyclic()) {
+        if ((indexVar < 0 || indexVar >= count) && !wheel.isCyclic()) {
             // empty view
             emptyItems = addView(view, emptyItems)
         } else {
-            while (index < 0) {
-                index = count + index
+            while (indexVar < 0) {
+                indexVar += count
             }
-            index %= count
+            indexVar %= count
             items = addView(view, items)
         }
     }

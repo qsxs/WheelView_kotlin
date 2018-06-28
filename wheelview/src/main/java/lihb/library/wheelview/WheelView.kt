@@ -245,7 +245,7 @@ class WheelView : View {
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        if (adapter != null && adapter!!.itemsCount > 0) {
+        if (adapter != null && adapter!!.getItemsCount() > 0) {
             updateView()
 
             drawItems(canvas)
@@ -277,7 +277,7 @@ class WheelView : View {
                 if (isValidItemIndex(currentItem + items)) {
                     var index = currentItem + items
                     if (index < 0 && isCyclic) {
-                        index = adapter!!.itemsCount + items
+                        index = adapter!!.getItemsCount() + items
                     }
                     notifyClickListeners(index, items == 0)
                 }
@@ -302,11 +302,11 @@ class WheelView : View {
      */
     internal fun setCurrentItem(index: Int, animated: Boolean, animationDuration: Int) {
         var indexFinal = index
-        if (adapter == null || adapter!!.itemsCount == 0) {
+        if (adapter == null || adapter!!.getItemsCount() == 0) {
             return  // throw?
         }
 
-        val itemCount = adapter!!.itemsCount
+        val itemCount = adapter!!.getItemsCount()
         if (indexFinal < 0 || indexFinal >= itemCount) {
             if (isCyclic) {
                 while (index < 0) {
@@ -470,7 +470,7 @@ class WheelView : View {
         var count = scrollingOffset / itemHeight
 
         var pos = currentItem - count
-        val itemCount = adapter!!.itemsCount
+        val itemCount = adapter!!.getItemsCount()
 
         var fixPos = scrollingOffset % itemHeight
         if (Math.abs(fixPos) <= itemHeight / 2) {
@@ -582,10 +582,10 @@ class WheelView : View {
         }
 
         if (!updated) {
-            updated = firstItem != range!!.first || itemsLayout!!.childCount != range.count
+            updated = firstItem != range.first || itemsLayout!!.childCount != range.count
         }
 
-        if (firstItem > range!!.first && firstItem <= range.last) {
+        if (firstItem > range.first && firstItem <= range.last) {
             for (i in firstItem - 1 downTo range.first) {
                 if (!addViewItem(i, true)) {
                     break
@@ -738,8 +738,8 @@ class WheelView : View {
      * @return true if item index is not out of bounds or the wheel is cyclic
      */
     private fun isValidItemIndex(index: Int): Boolean {
-        return adapter != null && adapter!!.itemsCount > 0 &&
-                (isCyclic || index >= 0 && index < adapter!!.itemsCount)
+        return adapter != null && adapter!!.getItemsCount() > 0 &&
+                (isCyclic || index >= 0 && index < adapter!!.getItemsCount())
     }
 
     /**
@@ -750,10 +750,10 @@ class WheelView : View {
      */
     private fun getItemView(itemIndex: Int): View? {
         var index = itemIndex
-        if (adapter == null || adapter!!.itemsCount == 0) {
+        if (adapter == null || adapter!!.getItemsCount() == 0) {
             return null
         }
-        val count = adapter!!.itemsCount
+        val count = adapter!!.getItemsCount()
         if (!isValidItemIndex(index)) {
             return adapter!!.getEmptyItem(recycle.emptyItem, itemsLayout)
         } else {
@@ -840,7 +840,7 @@ class WheelView : View {
          *
          * @return the count of wheel items
          */
-        abstract val itemsCount: Int
+        abstract fun getItemsCount(): Int
 
         val currentIndex: Int
             get() {
@@ -864,11 +864,11 @@ class WheelView : View {
          * Get a View that displays an empty wheel item placed before the first or after
          * the last wheel item.
          *
-         * @param convertView the old view to reuse if possible
+         * @param emptyView the old view to reuse if possible
          * @param parent      the parent that this view will eventually be attached to
          * @return the empty item View
          */
-        abstract fun getEmptyItem(convertView: View?, parent: ViewGroup?): View?
+        abstract fun getEmptyItem(emptyView: View?, parent: ViewGroup?): View?
 
         /**
          * Register an observer that is called when changes happen to the data used by this adapter.
