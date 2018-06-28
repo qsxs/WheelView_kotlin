@@ -845,7 +845,7 @@ class WheelView : View {
         val currentIndex: Int
             get() {
                 if (wheelView == null) {
-                    throw IllegalArgumentException("请先把adapter设置给WheelView")
+                    throw IllegalArgumentException("please set adapter to WheelView first")
                 }
                 return wheelView!!.currentItem
             }
