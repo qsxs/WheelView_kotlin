@@ -813,6 +813,7 @@ class WheelView : View {
     }
 
     abstract class WheelViewAdapter {
+        private var datasetObservers: MutableList<DataSetObserver>? = null
         var wheelView: WheelView? = null
             internal set
         var onItemClickListener: OnItemClickedListener? = null
@@ -850,6 +851,50 @@ class WheelView : View {
             }
 
         /**
+         * Register an observer that is called when changes happen to the data used by this adapter.
+         *
+         * @param observer the observer to be registered
+         */
+        internal fun registerDataSetObserver(observer: DataSetObserver) {
+            if (datasetObservers == null) {
+                datasetObservers = LinkedList()
+            }
+            datasetObservers!!.add(observer)
+        }
+
+        /**
+         * Unregister an observer that has previously been registered
+         *
+         * @param observer the observer to be unregistered
+         */
+        internal fun unregisterDataSetObserver(observer: DataSetObserver) {
+            if (datasetObservers != null) {
+                datasetObservers!!.remove(observer)
+            }
+        }
+
+        /**
+         * Notifies observers about data changing
+         */
+         fun notifyDataChangedEvent() {
+            if (datasetObservers != null) {
+                for (observer in datasetObservers!!) {
+                    observer.onChanged()
+                }
+            }
+        }
+
+        /**
+         * Notifies observers about invalidating data
+         */
+         fun notifyDataInvalidatedEvent() {
+            if (datasetObservers != null) {
+                for (observer in datasetObservers!!) {
+                    observer.onInvalidated()
+                }
+            }
+        }
+        /**
          * Get a View that displays the data at the specified position in the data set
          *
          * @param index       the item index
@@ -868,20 +913,6 @@ class WheelView : View {
          * @return the empty item View
          */
         abstract fun getEmptyItem(emptyView: View?, parent: ViewGroup?): View?
-
-        /**
-         * Register an observer that is called when changes happen to the data used by this adapter.
-         *
-         * @param observer the observer to be registered
-         */
-        internal abstract fun registerDataSetObserver(observer: DataSetObserver)
-
-        /**
-         * Unregister an observer that has previously been registered
-         *
-         * @param observer the observer to be unregistered
-         */
-        internal abstract fun unregisterDataSetObserver(observer: DataSetObserver)
 
         fun scrollTo(index: Int) {
             scrollTo(index, false, 0)

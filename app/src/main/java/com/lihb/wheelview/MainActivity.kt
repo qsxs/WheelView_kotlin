@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 
         wheel_view2.setCyclic(false)
         wheel_view2.isGradual = false
-        wheel_view2.visibleItems = 2
+        wheel_view2.visibleItems = 5
         wheel_view2.divingWidth = 10
         wheel_view2.divingColor = Color.YELLOW
 
