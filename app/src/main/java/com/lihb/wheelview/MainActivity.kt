@@ -1,5 +1,6 @@
 package com.lihb.wheelview
 
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -36,6 +37,13 @@ class MainActivity : AppCompatActivity() {
         }
         adapter.setNewData(list)
         wheel_view2.adapter = adapter
+        adapter.setNewData(arrayListOf("0000000", "11111111", "22222222", "333333333"))
+
+        wheel_view2.setCyclic(false)
+        wheel_view2.isGradual = false
+        wheel_view2.visibleItems = 2
+        wheel_view2.divingWidth = 10
+        wheel_view2.divingColor = Color.YELLOW
 
         btn.setOnClickListener {
             val toInt = (Math.random() * list.size).toInt()

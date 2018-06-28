@@ -28,9 +28,9 @@ class WheelView : View {
 
     private val gradualColors = intArrayOf(0x70FFFFFF, 0x30FFFFFF, 0)
 
-    private var isGradual = true
-    private var divingColor = DEF_DIVING_COLOR
-    private var divingWidth = 1
+    var isGradual = true
+    var divingColor = DEF_DIVING_COLOR
+    var divingWidth = 1
     private var isCyclic = false
     var visibleItems = DEF_VISIBLE_ITEMS
 
@@ -826,12 +826,11 @@ class WheelView : View {
             }
         }
 
-        fun setOnItemSelectedListener(listener: (WheelView, WheelViewAdapter, Int) -> Int) {
+        fun setOnItemSelectedListener(listener: (WheelView, WheelViewAdapter, Int) -> Unit) {
             onItemSelectedListener = object : OnItemSelectedListener {
                 override fun onItemSelected(wheel: WheelView, adapter: WheelViewAdapter, index: Int) {
                     listener.invoke(wheel, adapter, index)
                 }
-
             }
         }
 

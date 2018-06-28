@@ -9,15 +9,17 @@
     <lihb.library.wheelview.WheelView
         android:id="@+id/wheel_view2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/colorAccent"
         app:cyclic="true"
         app:diving_color="@color/colorPrimaryDark"
         app:diving_width="10dp"
         app:gradual="true"
+        app:layout_constraintTop_toBottomOf="@+id/ll"
         app:visible_items="5" />
 
     <LinearLayout
+        android:id="@+id/ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -27,11 +29,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="随机滚动" />
+
         <Button
             android:id="@+id/btn_scroll_next"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="滚到下一个" />
+
         <Button
             android:id="@+id/btn_select"
             android:layout_width="match_parent"
