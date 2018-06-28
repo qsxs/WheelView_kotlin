@@ -42,17 +42,17 @@ class MainActivity : AppCompatActivity() {
 
         btn.setOnClickListener {
             val toInt = (Math.random() * list.size).toInt()
-            Toast.makeText(MainActivity@ this, "滚动到$toInt", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(MainActivity@ this, "滚动到$toInt", Toast.LENGTH_SHORT).show()
             adapter.scrollTo(toInt, true)
         }
         btn_scroll_next.setOnClickListener {
             val toInt = adapter.currentIndex + 1
-            Toast.makeText(MainActivity@ this, "滚动到$toInt", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(MainActivity@ this, "滚动到$toInt", Toast.LENGTH_SHORT).show()
             adapter.scrollTo(toInt, true)
         }
         btn_select.setOnClickListener {
             val toInt = (Math.random() * list.size).toInt()
-            Toast.makeText(MainActivity@ this, "选中到$toInt", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(MainActivity@ this, "选中到$toInt", Toast.LENGTH_SHORT).show()
             adapter.scrollTo(toInt)
         }
         btn_get_select.setOnClickListener {

@@ -150,8 +150,13 @@ class WheelView : View {
      *
      * @param listener the listener
      */
-    fun addChangingListener(@Nullable listener: (Any, Any, Any) -> Int) {
-        TODO()
+    fun addChangingListener(@Nullable listener: (WheelView, Int, Int) -> Int) {
+        addChangingListener(object : OnWheelChangedListener {
+            override fun onChanged(wheel: WheelView, oldValue: Int, newValue: Int) {
+                listener.invoke(wheel, oldValue, newValue)
+            }
+
+        })
     }
 
     /**
@@ -813,12 +818,21 @@ class WheelView : View {
         var onItemClickListener: OnItemClickedListener? = null
         var onItemSelectedListener: OnItemSelectedListener? = null
 
-        fun setOnItemClickListener(param: (WheelView, WheelViewAdapter, Int, Boolean) -> Unit) {
-            TODO()
+        fun setOnItemClickListener(listener: (WheelView, WheelViewAdapter, Int, Boolean) -> Unit) {
+            onItemClickListener = object : OnItemClickedListener {
+                override fun onItemClicked(wheel: WheelView, adapter: WheelViewAdapter, index: Int, isSelected: Boolean) {
+                    listener.invoke(wheel, adapter, index, isSelected)
+                }
+            }
         }
 
-        fun setOnItemSelectedListener(param: (WheelView, WheelViewAdapter, Int) -> Int) {
-            TODO()
+        fun setOnItemSelectedListener(listener: (WheelView, WheelViewAdapter, Int) -> Int) {
+            onItemSelectedListener = object : OnItemSelectedListener {
+                override fun onItemSelected(wheel: WheelView, adapter: WheelViewAdapter, index: Int) {
+                    listener.invoke(wheel, adapter, index)
+                }
+
+            }
         }
 
         /**
