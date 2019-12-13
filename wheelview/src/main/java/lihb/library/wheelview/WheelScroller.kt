@@ -10,6 +10,7 @@ import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.MotionEvent
 import android.view.animation.Interpolator
 import android.widget.Scroller
+import kotlin.math.abs
 
 /**
  * Scroller class handles scrolling events and updates the
@@ -73,7 +74,7 @@ class WheelScroller(
 
                     // scrolling is not finished when it comes to final Y
                     // so, finish it manually
-                    if (Math.abs(currY - scroller!!.finalY) < MIN_DELTA_FOR_SCROLLING) {
+                    if (abs(currY - scroller!!.finalY) < MIN_DELTA_FOR_SCROLLING) {
                         currY = scroller!!.finalY
                         scroller!!.forceFinished(true)
                     }
@@ -142,7 +143,7 @@ class WheelScroller(
 
         lastScrollY = 0
 
-        scroller!!.startScroll(0, 0, 0, distance, if (time >= 0) time else WheelScroller.SCROLLING_DURATION)
+        scroller!!.startScroll(0, 0, 0, distance, if (time >= 0) time else SCROLLING_DURATION)
         setNextMessage(MESSAGE_SCROLL)
 
         startScrolling()

@@ -8,8 +8,10 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.GradientDrawable.Orientation
+import android.support.annotation.AttrRes
 import android.support.annotation.Nullable
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +28,14 @@ class WheelView : View {
         private const val DEF_VISIBLE_ITEMS = 5
     }
 
-    private val gradualColors = intArrayOf(0x70FFFFFF, 0x30FFFFFF, 0)
+    private val gradualColors by lazy {
+        val colorByAttr = getColorByAttr(android.R.attr.colorBackground)
+
+        return@lazy intArrayOf(
+                Color.argb(112, Color.red(colorByAttr), Color.green(colorByAttr), Color.blue(colorByAttr)),
+                Color.argb(48, Color.red(colorByAttr), Color.green(colorByAttr), Color.blue(colorByAttr)),
+                0)
+    }
 
     var isGradual = true
     var divingColor = DEF_DIVING_COLOR
@@ -812,6 +821,12 @@ class WheelView : View {
         }
     }
 
+    private fun getColorByAttr(@AttrRes attr: Int): Int {
+        val typedValue = TypedValue()
+        context.theme.resolveAttribute(attr, typedValue, true)
+        return typedValue.data
+    }
+
     abstract class WheelViewAdapter {
         private var datasetObservers: MutableList<DataSetObserver>? = null
         var wheelView: WheelView? = null
@@ -876,7 +891,7 @@ class WheelView : View {
         /**
          * Notifies observers about data changing
          */
-         fun notifyDataChangedEvent() {
+        fun notifyDataChangedEvent() {
             if (datasetObservers != null) {
                 for (observer in datasetObservers!!) {
                     observer.onChanged()
@@ -887,13 +902,14 @@ class WheelView : View {
         /**
          * Notifies observers about invalidating data
          */
-         fun notifyDataInvalidatedEvent() {
+        fun notifyDataInvalidatedEvent() {
             if (datasetObservers != null) {
                 for (observer in datasetObservers!!) {
                     observer.onInvalidated()
                 }
             }
         }
+
         /**
          * Get a View that displays the data at the specified position in the data set
          *
