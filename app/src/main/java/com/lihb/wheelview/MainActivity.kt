@@ -2,17 +2,22 @@ package com.lihb.wheelview
 
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_main.*
 import lihb.library.wheelview.NumericWheelAdapter
 import lihb.library.wheelview.WheelView
 
 class MainActivity : AppCompatActivity() {
 
+    private val btn by lazy { findViewById<View>(R.id.btn) }
+    private val btn_scroll_next by lazy { findViewById<View>(R.id.btn) }
+    private val btn_select by lazy { findViewById<View>(R.id.btn) }
+    private val btn_get_select by lazy { findViewById<View>(R.id.btn) }
+    private val wheel_view2 by lazy { findViewById<WheelView>(R.id.wheel_view2) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -34,11 +39,11 @@ class MainActivity : AppCompatActivity() {
 //        }
 
         adapter.setOnItemClickListener { wheel, adapter, index, isSelected ->
-            Toast.makeText(MainActivity@ this, "点击$index,$isSelected", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "点击$index,$isSelected", Toast.LENGTH_SHORT).show()
         }
         adapter.setOnItemSelectedListener { wheel, adapter, index ->
-            Toast.makeText(MainActivity@ this, "最后选中的是$index", Toast.LENGTH_SHORT).show()
-            Log.i(MainActivity@ this.javaClass.simpleName, "onSelected:$index")
+            Toast.makeText(this, "最后选中的是$index", Toast.LENGTH_SHORT).show()
+            Log.i(this.javaClass.simpleName, "onSelected:$index")
         }
 //        adapter.setNewData(list)
         wheel_view2.adapter = adapter
@@ -66,7 +71,7 @@ class MainActivity : AppCompatActivity() {
             adapter.scrollTo(toInt)
         }
         btn_get_select.setOnClickListener {
-            Toast.makeText(MainActivity@ this, "当前选中${adapter.currentIndex}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "当前选中${adapter.currentIndex}", Toast.LENGTH_SHORT).show()
             val view = LayoutInflater.from(this@MainActivity).inflate(R.layout.dialog_selected_date_v2, null, false)
             val wheelYear = view.findViewById<WheelView>(R.id.wheel_year)
             val wheelMonth = view.findViewById<WheelView>(R.id.wheel_month)
@@ -84,7 +89,7 @@ class MainActivity : AppCompatActivity() {
 //            Toast.makeText(MainActivity@ this, "选中$itemIndex", Toast.LENGTH_SHORT).show()
 //        }
         wheel_view2.addChangingListener { wheel, oldValue, newValue ->
-            Log.i(MainActivity@ this.javaClass.simpleName, "Changing $newValue")
+            Log.i(this.javaClass.simpleName, "Changing $newValue")
         }
     }
 }

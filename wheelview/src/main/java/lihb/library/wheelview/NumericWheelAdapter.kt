@@ -47,8 +47,7 @@ class NumericWheelAdapter : AbstractWheelTextAdapter {
     }
 
     public override fun getItemText(index: Int): CharSequence {
-        if (index in 0..(getItemsCount() - 1)) {
-
+        if (index in 0 until getItemsCount()) {
             val value: Int =
                     if (multiple != 0) {
                         minValue + index * multiple
@@ -56,14 +55,14 @@ class NumericWheelAdapter : AbstractWheelTextAdapter {
                         minValue + index
                     }
             //            int value = minValue + index;
-            return if (format != null) String.format(format!!, value) else Integer.toString(value)
+            return if (format != null) String.format(format!!, value) else value.toString()
         }
         return ""
     }
 
     override fun getItem(index: Int, itemView: View?, parent: ViewGroup?): View? {
         var convertView = itemView
-        if (index in 0..(getItemsCount() - 1)) {
+        if (index in 0 until getItemsCount()) {
             if (convertView == null) {
                 convertView = getView(itemResource, parent)
             }

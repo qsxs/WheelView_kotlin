@@ -45,7 +45,7 @@ class WheelRecycle
      * @param range the range of current wheel items
      * @return the new value of first item number
      */
-    fun recycleItems(layout: LinearLayout, firstItem: Int, range: ItemsRange): Int {
+    fun recycleItems(layout: LinearLayout, firstItem: Int, range: IntRange): Int {
         var firstItemVar = firstItem
         var index = firstItemVar
         var i = 0

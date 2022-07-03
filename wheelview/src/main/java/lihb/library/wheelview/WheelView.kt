@@ -8,8 +8,8 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.GradientDrawable.Orientation
-import android.support.annotation.AttrRes
-import android.support.annotation.Nullable
+import androidx.annotation.AttrRes
+import androidx.annotation.Nullable
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.MotionEvent
@@ -365,7 +365,7 @@ class WheelView : View {
             scrollingOffset = 0
         } else if (itemsLayout != null) {
             // cache all items
-            recycle.recycleItems(itemsLayout!!, firstItem, ItemsRange())
+            recycle.recycleItems(itemsLayout!!, firstItem, IntRange(0,0))
         }
 
         invalidate()
@@ -395,9 +395,9 @@ class WheelView : View {
      *
      * @return the items range
      */
-    private fun getItemsRange(): ItemsRange {
+    private fun getItemsRange(): IntRange {
         if (getItemHeight() == 0) {
-            return ItemsRange(0, 0)
+            return IntRange(0, 0)
         }
 
         var first = currentItem
@@ -417,7 +417,7 @@ class WheelView : View {
             first -= emptyItems
             count += Math.asin(emptyItems.toDouble()).toInt()
         }
-        return ItemsRange(first, count)
+        return IntRange(first, first+count-1)
     }
 
     /**
@@ -591,7 +591,7 @@ class WheelView : View {
         }
 
         if (!updated) {
-            updated = firstItem != range.first || itemsLayout!!.childCount != range.count
+            updated = firstItem != range.first || itemsLayout!!.childCount != range.count()
         }
 
         if (firstItem > range.first && firstItem <= range.last) {
@@ -606,7 +606,7 @@ class WheelView : View {
         }
 
         var first = firstItem
-        for (i in itemsLayout!!.childCount until range.count) {
+        for (i in itemsLayout!!.childCount until range.count()) {
             if (!addViewItem(firstItem + i, false) && itemsLayout!!.childCount == 0) {
                 first++
             }
@@ -704,7 +704,7 @@ class WheelView : View {
     private fun buildViewForMeasuring() {
         // clear all items
         if (itemsLayout != null) {
-            recycle.recycleItems(itemsLayout!!, firstItem, ItemsRange())
+            recycle.recycleItems(itemsLayout!!, firstItem, IntRange(0,0))
         } else {
             createItemsLayout()
         }
